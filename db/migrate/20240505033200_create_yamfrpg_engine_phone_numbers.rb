@@ -7,6 +7,8 @@ class CreateYamfrpgEnginePhoneNumbers < ActiveRecord::Migration[7.1]
       t.string :number
 
       t.timestamps
+
+      t.index :number, unique: true
     end
   end
 end

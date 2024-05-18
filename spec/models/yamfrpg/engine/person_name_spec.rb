@@ -2,7 +2,8 @@
 
 require 'rails_helper'
 
-RSpec.describe :yamfrpg_engine_person_name, :model do
+# rubocop: disable Metrics/BlockLength
+RSpec.describe Yamfrpg::Engine::PersonName, :model do
   describe 'validations' do
     subject(:person_name) { build(:person_name) }
 
@@ -24,4 +25,30 @@ RSpec.describe :yamfrpg_engine_person_name, :model do
       is_expected.to have_one(:user).class_name(Yamfrpg::Engine::User.to_s)
     end
   end
+
+  describe 'scopes' do
+    subject(:matched) { scope.order(:id).pluck(:id) }
+
+    describe '#for_name' do
+      let!(:given_first_surname) { create(:yamfrpg_engine_person_name, :given_first_surname) }
+      let!(:given_first_suffix) { create(:yamfrpg_engine_person_name, :given_first_suffix) }
+      let!(:given_first_full) { create(:yamfrpg_engine_person_name, :given_first_full) }
+      let!(:given_first_full_suffix) { create(:yamfrpg_engine_person_name, :given_first_full_suffix) }
+      let!(:surname_first_given) { create(:yamfrpg_engine_person_name, :surname_first_given) }
+      let!(:surname_first_suffix) { create(:yamfrpg_engine_person_name, :surname_first_suffix) }
+      let!(:surname_first_full) { create(:yamfrpg_engine_person_name, :surname_first_full) }
+      let!(:surname_first_full_suffix) { create(:yamfrpg_engine_person_name, :surname_first_full_suffix) }
+      let(:scope) { Yamfrpg::Engine::PersonName.for_name(name, style) }
+
+      context 'just the surname' do
+        let(:name) { given_first_surname.surname }
+        let(:expected_ids) do
+          Yamfrpg::Engine::PersonName.where(surname:).order(:id).pluck(:id)
+        end
+
+        it { is_expected.to match_array(expected_ids) }
+      end
+    end
+  end
 end
+# rubocop: enable Metrics/BlockLength

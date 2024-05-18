@@ -14,6 +14,12 @@ module Yamfrpg
                validate: true
       has_many :phone_numbers, class_name: Yamfrpg::Engine::PhoneNumber.to_s, through: :user_phone_numbers
 
+      has_many :user_roles,
+               autosave: true,
+               class_name: Yamfrpg::Engine::UserRole.to_s,
+               dependent: :destroy,
+               validate: true
+
       # Include default devise modules. Others available are:
       # :confirmable, :expirable, :password_archivable, :password_expirable, :secure_validatable, :validatable.
       devise :database_authenticatable,

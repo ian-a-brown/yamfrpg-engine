@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe :yamfrpg_engine_user_phone_number, :model do
+RSpec.describe Yamfrpg::Engine::UserPhoneNumber, :model do
   describe 'validations' do
     subject(:user_phone_number) { build(:user_phone_number) }
 

@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe :yamfrpg_engine_user, :model do
+RSpec.describe Yamfrpg::Engine::User, :model do
   describe 'validations' do
     subject(:user) { build(:user) }
 
@@ -17,6 +17,8 @@ RSpec.describe :yamfrpg_engine_user, :model do
 
       is_expected.to have_many(:user_phone_numbers).class_name(Yamfrpg::Engine::UserPhoneNumber.to_s)
       is_expected.to have_many(:phone_numbers).class_name(Yamfrpg::Engine::PhoneNumber.to_s).through(:user_phone_number)
+
+      is_expected.to have_many(:user_roles).class_name(Yamfrpg::Engine::UserRole.to_s)
     end
   end
 end

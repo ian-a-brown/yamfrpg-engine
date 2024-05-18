@@ -7,9 +7,12 @@ class CreateYamfrpgEnginePersonNames < ActiveRecord::Migration[7.1]
       t.string :given_name
       t.string :middle_name
       t.string :surname
+      t.string :suffix
       t.integer :style
 
       t.timestamps
+
+      t.index %i[given_name middle_name surname suffix style], unique: true
     end
   end
 end

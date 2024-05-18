@@ -9,6 +9,8 @@ class CreateYamfrpgEngineUserPhoneNumbers < ActiveRecord::Migration[7.1]
       t.integer :kind
 
       t.timestamps
+
+      t.index %i[user_id phone_number_id], unique: true
     end
   end
 end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_05_05_033751) do
+ActiveRecord::Schema[7.1].define(version: 2024_05_09_001035) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -23,6 +23,15 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_05_033751) do
     t.string "postal_code"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "yamfrpg_engine_games", force: :cascade do |t|
+    t.bigint "owner_id", null: false
+    t.string "game_name", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["game_name"], name: "index_yamfrpg_engine_games_on_game_name", unique: true
+    t.index ["owner_id"], name: "index_yamfrpg_engine_games_on_owner_id"
   end
 
   create_table "yamfrpg_engine_person_names", force: :cascade do |t|
@@ -40,6 +49,16 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_05_033751) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "yamfrpg_engine_players", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "game_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["game_id"], name: "index_yamfrpg_engine_players_on_game_id"
+    t.index ["user_id", "game_id"], name: "index_yamfrpg_engine_players_on_user_id_and_game_id", unique: true
+    t.index ["user_id"], name: "index_yamfrpg_engine_players_on_user_id"
+  end
+
   create_table "yamfrpg_engine_user_phone_numbers", force: :cascade do |t|
     t.bigint "phone_number_id", null: false
     t.bigint "user_id", null: false
@@ -47,7 +66,16 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_05_033751) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["phone_number_id"], name: "index_yamfrpg_engine_user_phone_numbers_on_phone_number_id"
+    t.index ["user_id", "phone_number_id"], name: "idx_on_user_id_phone_number_id_ebdeaa7e23", unique: true
     t.index ["user_id"], name: "index_yamfrpg_engine_user_phone_numbers_on_user_id"
+  end
+
+  create_table "yamfrpg_engine_user_roles", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.integer "role", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_yamfrpg_engine_user_roles_on_user_id"
   end
 
   create_table "yamfrpg_engine_users", force: :cascade do |t|
@@ -75,8 +103,12 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_05_033751) do
     t.index ["unlock_token"], name: "index_yamfrpg_engine_users_on_unlock_token", unique: true
   end
 
+  add_foreign_key "yamfrpg_engine_games", "yamfrpg_engine_users", column: "owner_id"
+  add_foreign_key "yamfrpg_engine_players", "yamfrpg_engine_games", column: "game_id"
+  add_foreign_key "yamfrpg_engine_players", "yamfrpg_engine_users", column: "user_id"
   add_foreign_key "yamfrpg_engine_user_phone_numbers", "yamfrpg_engine_phone_numbers", column: "phone_number_id"
   add_foreign_key "yamfrpg_engine_user_phone_numbers", "yamfrpg_engine_users", column: "user_id"
+  add_foreign_key "yamfrpg_engine_user_roles", "yamfrpg_engine_users", column: "user_id"
   add_foreign_key "yamfrpg_engine_users", "yamfrpg_engine_addresses", column: "address_id"
   add_foreign_key "yamfrpg_engine_users", "yamfrpg_engine_person_names", column: "person_name_id"
 end

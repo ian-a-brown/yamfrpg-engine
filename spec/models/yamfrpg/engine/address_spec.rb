@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe :yamfrpg_engine_address, :model do
+RSpec.describe Yamfrpg::Engine::Address, :model do
   describe 'validations' do
     subject(:address) { build(:address) }
 
