@@ -2,7 +2,6 @@
 
 FactoryBot.define do
   factory :game, class: Yamfrpg::Engine::Game do
-    association :owner, factory: :user, strategy: :create
-    sequence(:name) { |n| "#{owner.name} Game #{n + 1}" }
+    sequence(:game_name) { |n| "Game #{n + 1}" }
   end
 end

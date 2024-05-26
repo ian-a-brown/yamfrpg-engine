@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_05_09_001035) do
+ActiveRecord::Schema[7.1].define(version: 2024_05_26_001356) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -25,38 +25,49 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_09_001035) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "yamfrpg_engine_game_masters", force: :cascade do |t|
+    t.bigint "game_id", null: false
+    t.boolean "owner"
+    t.bigint "user_role_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["game_id"], name: "index_yamfrpg_engine_game_masters_on_game_id"
+    t.index ["user_role_id"], name: "index_yamfrpg_engine_game_masters_on_user_role_id"
+  end
+
   create_table "yamfrpg_engine_games", force: :cascade do |t|
-    t.bigint "owner_id", null: false
     t.string "game_name", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["game_name"], name: "index_yamfrpg_engine_games_on_game_name", unique: true
-    t.index ["owner_id"], name: "index_yamfrpg_engine_games_on_owner_id"
   end
 
   create_table "yamfrpg_engine_person_names", force: :cascade do |t|
     t.string "given_name"
     t.string "middle_name"
     t.string "surname"
+    t.string "suffix"
     t.integer "style"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["given_name", "middle_name", "surname", "suffix", "style"], name: "idx_on_given_name_middle_name_surname_suffix_style_4f36a7df12", unique: true
   end
 
   create_table "yamfrpg_engine_phone_numbers", force: :cascade do |t|
     t.string "number"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["number"], name: "index_yamfrpg_engine_phone_numbers_on_number", unique: true
   end
 
   create_table "yamfrpg_engine_players", force: :cascade do |t|
-    t.bigint "user_id", null: false
     t.bigint "game_id", null: false
+    t.bigint "user_role_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["game_id"], name: "index_yamfrpg_engine_players_on_game_id"
-    t.index ["user_id", "game_id"], name: "index_yamfrpg_engine_players_on_user_id_and_game_id", unique: true
-    t.index ["user_id"], name: "index_yamfrpg_engine_players_on_user_id"
+    t.index ["user_role_id", "game_id"], name: "index_yamfrpg_engine_players_on_user_role_id_and_game_id", unique: true
+    t.index ["user_role_id"], name: "index_yamfrpg_engine_players_on_user_role_id"
   end
 
   create_table "yamfrpg_engine_user_phone_numbers", force: :cascade do |t|
@@ -103,9 +114,10 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_09_001035) do
     t.index ["unlock_token"], name: "index_yamfrpg_engine_users_on_unlock_token", unique: true
   end
 
-  add_foreign_key "yamfrpg_engine_games", "yamfrpg_engine_users", column: "owner_id"
+  add_foreign_key "yamfrpg_engine_game_masters", "yamfrpg_engine_games", column: "game_id"
+  add_foreign_key "yamfrpg_engine_game_masters", "yamfrpg_engine_user_roles", column: "user_role_id"
   add_foreign_key "yamfrpg_engine_players", "yamfrpg_engine_games", column: "game_id"
-  add_foreign_key "yamfrpg_engine_players", "yamfrpg_engine_users", column: "user_id"
+  add_foreign_key "yamfrpg_engine_players", "yamfrpg_engine_user_roles", column: "user_role_id"
   add_foreign_key "yamfrpg_engine_user_phone_numbers", "yamfrpg_engine_phone_numbers", column: "phone_number_id"
   add_foreign_key "yamfrpg_engine_user_phone_numbers", "yamfrpg_engine_users", column: "user_id"
   add_foreign_key "yamfrpg_engine_user_roles", "yamfrpg_engine_users", column: "user_id"

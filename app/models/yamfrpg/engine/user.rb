@@ -29,6 +29,18 @@ module Yamfrpg
              :recoverable,
              :rememberable,
              :timeoutable
+
+      def administrator?
+        user_roles.where(role: :administrator).any?
+      end
+
+      def game_master?
+        user_roles.where(role: :game_master).any?
+      end
+
+      def player?
+        user_roles.where(role: :player).any?
+      end
     end
   end
 end

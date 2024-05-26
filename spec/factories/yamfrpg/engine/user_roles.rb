@@ -5,6 +5,18 @@ FactoryBot.define do
     association :user, strategy: :create
 
     role { UserRoleFactoryHelper.new.role }
+
+    trait :administrator do
+      role { :administrator }
+    end
+
+    trait :game_master do
+      role { :game_master }
+    end
+
+    trait :player do
+      role { :player }
+    end
   end
 end
 

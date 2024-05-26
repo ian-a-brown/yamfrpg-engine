@@ -4,7 +4,6 @@
 class CreateYamfrpgEngineGames < ActiveRecord::Migration[7.1]
   def change
     create_table :yamfrpg_engine_games do |t|
-      t.references :owner, null: false, foreign_key: { to_table: :yamfrpg_engine_users }
       t.string :game_name, null: false
 
       t.timestamps

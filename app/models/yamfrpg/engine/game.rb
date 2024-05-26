@@ -4,7 +4,8 @@ module Yamfrpg
   module Engine
     # Game model for YAMFRPG.
     class Game < ApplicationRecord
-      belongs_to :owner, class_name: Yamfrpg::Engine::User.to_s
+      has_many :game_masters, dependent: :destroy, autosave: true
+      has_many :players, dependent: :destroy, autosave: true
 
       validates :game_name, presence: true, uniqueness: true
     end

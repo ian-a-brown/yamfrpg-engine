@@ -2,7 +2,7 @@
 
 FactoryBot.define do
   factory :player, class: Yamfrpg::Engine::Player do
-    association :user, factory: %i[user player], strategy: :create
     association :game, strategy: :create
+    association :user_role, factory: %i[user_role player], strategy: :create
   end
 end

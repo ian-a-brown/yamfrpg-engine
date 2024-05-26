@@ -14,6 +14,9 @@ RSpec.describe Yamfrpg::Engine::UserRole, :model do
       other_user_role = create(:user_role, user: user_role.user, role: user_role.role)
       is_expected.to_not be_valid
       other_user_role.destroy!
+
+      is_expected.to have_many(:game_masters)
+      is_expected.to have_many(:players)
     end
   end
 end

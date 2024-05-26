@@ -3,8 +3,8 @@
 # rubocop: disable Metrics/BlockLength
 FactoryBot.define do
   factory :person_name, class: Yamfrpg::Engine::PersonName do
-    given_name { Faker::Name.first_name }
-    surname { Faker::Name.last_name }
+    given_name { Faker::Name.first_name.gsub(' ', '') }
+    surname { Faker::Name.last_name.gsub(' ', '') }
     style { PersonNameFactoryHelper.new.style }
 
     trait :given_first_surname do
@@ -19,13 +19,13 @@ FactoryBot.define do
     end
 
     trait :given_first_full do
-      middle_name { Faker::Name.middle_name }
+      middle_name { Faker::Name.middle_name.gsub(' ', '') }
       suffix { nil }
       style { :given_name_first }
     end
 
     trait :given_first_full_suffix do
-      middle_name { Faker::Name.middle_name }
+      middle_name { Faker::Name.middle_name.gsub(' ', '') }
       suffix { Faker::Name.suffix }
       style { :given_name_first }
     end
@@ -43,13 +43,13 @@ FactoryBot.define do
     end
 
     trait :surname_first_full do
-      middle_name { Faker::Name.middle_name }
+      middle_name { Faker::Name.middle_name.gsub(' ', '') }
       suffix { nil }
       style { :surname_first }
     end
 
     trait :surname_first_full_suffix do
-      middle_name { Faker::Name.middle_name }
+      middle_name { Faker::Name.middle_name.gsub(' ', '') }
       suffix { Faker::Name.suffix }
       style { :surname_first }
     end
