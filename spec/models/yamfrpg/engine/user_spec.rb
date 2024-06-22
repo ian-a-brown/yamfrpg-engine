@@ -16,6 +16,8 @@ RSpec.describe Yamfrpg::Engine::User, :model do
       is_expected.to belong_to(:person_name).required(false)
       user.person_name = person_name
 
+      is_expected.to have_many(:login_sessions)
+
       is_expected.to have_many(:user_phone_numbers).class_name(Yamfrpg::Engine::UserPhoneNumber.to_s)
       is_expected.to have_many(:phone_numbers).class_name(Yamfrpg::Engine::PhoneNumber.to_s)
                                               .through(:user_phone_numbers)

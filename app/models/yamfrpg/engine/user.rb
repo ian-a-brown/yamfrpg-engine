@@ -7,6 +7,8 @@ module Yamfrpg
       belongs_to :address, class_name: Yamfrpg::Engine::Address.to_s, required: false
       belongs_to :person_name, class_name: Yamfrpg::Engine::PersonName.to_s, required: false
 
+      has_many :login_sessions, dependent: :destroy, autosave: true
+
       has_many :user_phone_numbers,
                autosave: true,
                class_name: Yamfrpg::Engine::UserPhoneNumber.to_s,
@@ -20,11 +22,12 @@ module Yamfrpg
                dependent: :destroy,
                validate: true
 
+      acts_as_token_uuid_authenticatable
+
       # Include default devise modules. Others available are:
       # :confirmable, :expirable, :password_archivable, :password_expirable, :secure_validatable, :validatable.
       devise :database_authenticatable,
              :lockable,
-             :omniauthable,
              :registerable,
              :recoverable,
              :rememberable,
